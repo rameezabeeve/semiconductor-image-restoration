@@ -1,1 +1,5 @@
-
+torch
+numpy
+matplotlib
+scikit-image
+Pillow
