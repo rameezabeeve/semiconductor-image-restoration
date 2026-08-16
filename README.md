@@ -28,8 +28,7 @@ A deep learning based image restoration and super-resolution model is used.
 - `evaluate.py` - Inference/evaluation script
 - `model.py` - Model architecture
 - `requirements.txt` - Required Python packages
-- `weights/` - Trained model weights
-- `outputs/` - Restored test outputs
+
 
 ## Status
 
