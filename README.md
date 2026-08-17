@@ -68,3 +68,70 @@ semiconductor-image-restoration/
 │
 └── restored_outputs/
     └── restored `.npy` files
+
+Installation
+
+Clone the repository:
+
+git clone https://github.com/rameezabeeve/semiconductor-image-restoration.git
+cd semiconductor-image-restoration
+
+
+Install the required dependencies:
+
+pip install -r requirements.txt
+
+
+Training
+Place the training dataset in:
+
+data/train/NoisyLR
+data/train/GT
+
+Then run:
+
+python train.py
+
+The best model is automatically saved as:
+
+weights/best_model.pth
+
+
+Inference
+Place the test .npy files inside:
+test_images/
+
+Make sure the trained model is available at:
+weights/best_model.pth
+
+Run:
+python evaluation.py
+
+The restored images will be saved in:
+restored_outputs/
+
+
+Results
+The model was trained for 20 epochs using L1 loss.
+Best training loss achieved:
+0.033444
+
+The trained model successfully restored 30 test images.
+Input resolution:
+128x128
+
+Output resolution:
+256x256
+
+Technologies Used
+Python
+PyTorch
+NumPy
+Matplotlib
+Scikit-image
+Pillow
+
+
+Project Status
+The training and inference pipeline has been implemented and tested successfully.
+The trained model and sample restored outputs are included in the repository.
