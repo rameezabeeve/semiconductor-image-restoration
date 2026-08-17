@@ -3,7 +3,6 @@ import numpy as np
 import torch
 from model.model import RestorationModel
 
-
 DEVICE = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
 )
@@ -12,9 +11,7 @@ MODEL_PATH = "weights/best_model.pth"
 TEST_DIR = "test_images"
 OUTPUT_DIR = "restored_outputs"
 
-
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-
 
 model = RestorationModel().to(DEVICE)
 
@@ -27,48 +24,51 @@ model.load_state_dict(
 
 model.eval()
 
-
 files = [
     f for f in os.listdir(TEST_DIR)
     if f.endswith(".npy")
 ]
 
+for filename in files:
 
-with torch.no_grad():
+    input_path = os.path.join(
+        TEST_DIR,
+        filename
+    )
 
-    for filename in files:
+    output_path = os.path.join(
+        OUTPUT_DIR,
+        filename
+    )
 
-        input_path = os.path.join(
-            TEST_DIR,
-            filename
-        )
+    image = np.load(
+        input_path
+    ).astype(np.float32)
 
-        image = np.load(
-            input_path
-        ).astype(np.float32)
+    tensor = torch.from_numpy(
+        image
+    )
 
-        image = torch.from_numpy(
-            image
-        ).unsqueeze(0).unsqueeze(0)
+    tensor = tensor.unsqueeze(0)
+    tensor = tensor.unsqueeze(0)
+    tensor = tensor.to(DEVICE)
 
-        image = image.to(DEVICE)
+    with torch.no_grad():
 
-        restored = model(image)
+        restored = model(tensor)
 
-        restored = restored.squeeze().cpu().numpy()
+    restored = restored.squeeze()
+    restored = restored.cpu()
+    restored = restored.numpy()
 
-        output_path = os.path.join(
-            OUTPUT_DIR,
-            filename
-        )
+    np.save(
+        output_path,
+        restored
+    )
 
-        np.save(
-            output_path,
-            restored
-        )
+    print(
+        "Restored:",
+        filename
+    )
 
-        print(
-            f"Restored: {filename}"
-        )
-
-print("Inference completed.")
+print("Inference completed successfully.")
